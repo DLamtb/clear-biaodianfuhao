@@ -387,47 +387,60 @@ function showLoading(show) {
  * 显示错误消息
  */
 function showError(message) {
-    hideMessages();
-    const errorDiv = document.createElement('div');
-    errorDiv.className = 'error';
-    errorDiv.textContent = message;
-    document.querySelector('.controls').after(errorDiv);
-    
-    // 3秒后自动隐藏
-    setTimeout(() => {
-        if (errorDiv.parentNode) {
-            errorDiv.parentNode.removeChild(errorDiv);
-        }
-    }, 3000);
+    showMessage(message, 'error');
 }
 
 /**
  * 显示成功消息
  */
 function showSuccess(message) {
-    hideMessages();
-    const successDiv = document.createElement('div');
-    successDiv.className = 'success';
-    successDiv.textContent = message;
-    document.querySelector('.controls').after(successDiv);
-    
-    // 3秒后自动隐藏
+    showMessage(message, 'success');
+}
+
+/**
+ * 显示消息的通用函数
+ */
+function showMessage(message, type) {
+    const messageContainer = document.getElementById('messageContainer');
+    const messageDiv = document.createElement('div');
+    messageDiv.className = type;
+    messageDiv.textContent = message;
+
+    // 添加点击关闭功能
+    messageDiv.addEventListener('click', () => {
+        removeMessage(messageDiv);
+    });
+
+    messageContainer.appendChild(messageDiv);
+
+    // 4秒后自动隐藏
     setTimeout(() => {
-        if (successDiv.parentNode) {
-            successDiv.parentNode.removeChild(successDiv);
-        }
-    }, 3000);
+        removeMessage(messageDiv);
+    }, 4000);
+}
+
+/**
+ * 移除消息
+ */
+function removeMessage(messageDiv) {
+    if (messageDiv && messageDiv.parentNode) {
+        messageDiv.classList.add('removing');
+        setTimeout(() => {
+            if (messageDiv.parentNode) {
+                messageDiv.parentNode.removeChild(messageDiv);
+            }
+        }, 300);
+    }
 }
 
 /**
  * 隐藏所有消息
  */
 function hideMessages() {
-    document.querySelectorAll('.error, .success').forEach(el => {
-        if (el.parentNode) {
-            el.parentNode.removeChild(el);
-        }
-    });
+    const messageContainer = document.getElementById('messageContainer');
+    if (messageContainer) {
+        messageContainer.innerHTML = '';
+    }
 }
 
 /**

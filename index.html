@@ -650,13 +650,13 @@
             color: #721c24;
             padding: 16px 20px;
             border-radius: 12px;
-            margin: 15px 0;
             border: 1px solid rgba(245,198,203,0.8);
             backdrop-filter: blur(10px);
             box-shadow: 0 4px 15px rgba(114,28,36,0.1);
             animation: slideInDown 0.4s ease;
-            position: relative;
+            max-width: 350px;
             overflow: hidden;
+            word-wrap: break-word;
         }
 
         .error::before {
@@ -670,13 +670,13 @@
             color: #155724;
             padding: 16px 20px;
             border-radius: 12px;
-            margin: 15px 0;
             border: 1px solid rgba(195,230,203,0.8);
             backdrop-filter: blur(10px);
             box-shadow: 0 4px 15px rgba(21,87,36,0.1);
             animation: slideInDown 0.4s ease;
-            position: relative;
+            max-width: 350px;
             overflow: hidden;
+            word-wrap: break-word;
         }
 
         .success::before {
@@ -687,13 +687,45 @@
 
         @keyframes slideInDown {
             0% {
-                transform: translateY(-20px);
+                transform: translateX(100%);
                 opacity: 0;
             }
             100% {
-                transform: translateY(0);
+                transform: translateX(0);
                 opacity: 1;
             }
+        }
+
+        @keyframes slideOutRight {
+            0% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
+        .message-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            pointer-events: none;
+        }
+
+        .message-container .error,
+        .message-container .success {
+            position: relative;
+            margin-bottom: 10px;
+            pointer-events: auto;
+            cursor: pointer;
+        }
+
+        .message-container .error.removing,
+        .message-container .success.removing {
+            animation: slideOutRight 0.3s ease forwards;
         }
 
         .footer {
@@ -914,6 +946,9 @@
                 </div>
             </div>
         </div>
+
+        <!-- 消息提示容器 -->
+        <div class="message-container" id="messageContainer"></div>
     </div>
 
     <script src="script.js"></script>
